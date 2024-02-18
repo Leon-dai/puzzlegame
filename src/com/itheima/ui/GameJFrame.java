@@ -2,12 +2,18 @@ package com.itheima.ui;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Random;
 
-public class GameJFrame extends JFrame {
+public class GameJFrame extends JFrame implements KeyListener {
 
     //4.创建一个二维数组
     int[][] data = new int[4][4];
+
+    //记录空白方块在二维数组中的位置
+    int x = 0;
+    int y = 0;
 
     //JFrame 界面，窗体
     //子类呢？也表示界面，窗体
@@ -30,6 +36,7 @@ public class GameJFrame extends JFrame {
         //让界面显示出来，建议写在最后
         this.setVisible(true);
     }
+
 
     //初始化数据(打乱)
     private void initData() {
@@ -55,14 +62,20 @@ public class GameJFrame extends JFrame {
         //解法一：
         //遍历一维数组tempArr得到每一个元素，把每一个元素依次添加到二维数组当中
         for (int i = 0; i < tempArr.length; i++) {
-            data[i / 4][i % 4] = tempArr[i];
+            if(tempArr[i] == 0){
+                x = i / 4;
+                y = i % 4;
+            } else {
+                data[i / 4][i % 4] = tempArr[i];
+            }
+
         }
     }
 
     //初始化图片
     //添加图片的时候，就需要按照二维数组中管理的数据添加图片
     private void initImage() {
-
+        this.getContentPane().removeAll();
         //细节：
         //先加载的图片在上方，后加载的图片在下面
 
@@ -89,7 +102,7 @@ public class GameJFrame extends JFrame {
         background.setBounds(40, 40, 508, 560);
         //把背景图片添加到界面当中
         this.getContentPane().add(background);
-
+        this.getContentPane().repaint();
     }
 
     private void initJMenuBar() {
@@ -136,5 +149,66 @@ public class GameJFrame extends JFrame {
         this.setDefaultCloseOperation(3);
         //取消默认的居中放置，只有取消了才会按照XY轴的形式添加组件
         this.setLayout(null);
+        //给整个界面添加键盘监听事件
+        this.addKeyListener(this);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        //对上，下，左，右进行判断
+        //左37 上38 右39 下40
+        int code = e.getKeyCode();
+        if(code == 37){
+            if(y == 3){
+                return;
+            }
+            System.out.println("向左移动");
+            data[x][y] = data[x][y + 1];
+            data[x][y + 1] = 0;
+            y++;
+            initImage();
+        } else if(code == 38){
+            if(x == 3){
+                return;
+            }
+            System.out.println("向上移动");
+            //逻辑：
+            //把空白方块下方的数字往上移动
+            //x, y 表示空白方块
+            //x + 1, y表示空白方块下方的数字
+            data[x][y] = data[x + 1][y];
+            data[x + 1][y] = 0;
+            x++;
+            //调用方法按照最新的数字加载图片
+            initImage();
+        } else if(code == 39){
+            if(y == 0){
+                return;
+            }
+            System.out.println("向右移动");
+            data[x][y] = data[x][y - 1];
+            data[x][y - 1] = 0;
+            y--;
+            initImage();
+        } else if(code == 40){
+            if(x == 0){
+                return;
+            }
+            System.out.println("向下移动");
+            data[x][y] = data[x - 1][y];
+            data[x - 1][y] = 0;
+            x--;
+            initImage();
+        }
     }
 }
