@@ -15,6 +15,8 @@ public class GameJFrame extends JFrame implements KeyListener {
     int x = 0;
     int y = 0;
 
+    String path = "image/animal/animal3/";
+
     //JFrame 界面，窗体
     //子类呢？也表示界面，窗体
     //规定：GameJFrame这个界面表示的就是游戏的主界面
@@ -85,7 +87,7 @@ public class GameJFrame extends JFrame implements KeyListener {
             //内循环 ---在一行添加了4张图片
             for (int j = 0; j < 4; j++) {
                 //创建一个JLabel的对象(管理容器)
-                JLabel jLabel = new JLabel(new ImageIcon("image/animal/animal3/" + data[i][j] + ".jpg"));
+                JLabel jLabel = new JLabel(new ImageIcon(path + data[i][j] + ".jpg"));
                 //指定图片位置
                 jLabel.setBounds(105 * j + 83, 105 * i + 134, 105, 105);
                 //给图片添加边框
@@ -160,7 +162,22 @@ public class GameJFrame extends JFrame implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-
+        int code = e.getKeyCode();
+        //a 65
+        if(code == 65){
+            //把界面中所有的图片全部删除
+            this.getContentPane().removeAll();
+            //加载第一张完整的图片
+            JLabel all = new JLabel(new ImageIcon(path + "all.jpg"));
+            all.setBounds(83, 134, 420, 420);
+            this.getContentPane().add(all);
+            //加载背景图片
+            JLabel background = new JLabel(new ImageIcon("image/background.png"));
+            background.setBounds(40, 40, 508, 560);
+            //把背景图片添加到界面当中
+            this.getContentPane().add(background);
+            this.getContentPane().repaint();
+        }
     }
 
     @Override
@@ -208,6 +225,8 @@ public class GameJFrame extends JFrame implements KeyListener {
             data[x][y] = data[x - 1][y];
             data[x - 1][y] = 0;
             x--;
+            initImage();
+        } else if(code == 65){
             initImage();
         }
     }
