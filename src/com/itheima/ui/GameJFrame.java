@@ -64,7 +64,7 @@ public class GameJFrame extends JFrame implements KeyListener {
         //解法一：
         //遍历一维数组tempArr得到每一个元素，把每一个元素依次添加到二维数组当中
         for (int i = 0; i < tempArr.length; i++) {
-            if(tempArr[i] == 0){
+            if (tempArr[i] == 0) {
                 x = i / 4;
                 y = i % 4;
             } else {
@@ -160,11 +160,12 @@ public class GameJFrame extends JFrame implements KeyListener {
 
     }
 
+    //按键按下不松的时候调用这个方法
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
         //a 65
-        if(code == 65){
+        if (code == 65) {
             //把界面中所有的图片全部删除
             this.getContentPane().removeAll();
             //加载第一张完整的图片
@@ -180,13 +181,14 @@ public class GameJFrame extends JFrame implements KeyListener {
         }
     }
 
+    //按键松开的时候调用这个方法
     @Override
     public void keyReleased(KeyEvent e) {
         //对上，下，左，右进行判断
         //左37 上38 右39 下40
         int code = e.getKeyCode();
-        if(code == 37){
-            if(y == 3){
+        if (code == 37) {
+            if (y == 3) {
                 return;
             }
             System.out.println("向左移动");
@@ -194,8 +196,8 @@ public class GameJFrame extends JFrame implements KeyListener {
             data[x][y + 1] = 0;
             y++;
             initImage();
-        } else if(code == 38){
-            if(x == 3){
+        } else if (code == 38) {
+            if (x == 3) {
                 return;
             }
             System.out.println("向上移动");
@@ -208,8 +210,8 @@ public class GameJFrame extends JFrame implements KeyListener {
             x++;
             //调用方法按照最新的数字加载图片
             initImage();
-        } else if(code == 39){
-            if(y == 0){
+        } else if (code == 39) {
+            if (y == 0) {
                 return;
             }
             System.out.println("向右移动");
@@ -217,8 +219,8 @@ public class GameJFrame extends JFrame implements KeyListener {
             data[x][y - 1] = 0;
             y--;
             initImage();
-        } else if(code == 40){
-            if(x == 0){
+        } else if (code == 40) {
+            if (x == 0) {
                 return;
             }
             System.out.println("向下移动");
@@ -226,8 +228,18 @@ public class GameJFrame extends JFrame implements KeyListener {
             data[x - 1][y] = 0;
             x--;
             initImage();
-        } else if(code == 65){
+        } else if (code == 65) {
             initImage();
+        } else if (code == 87) {
+            data = new int[][]{
+                    {1, 2, 3, 4},
+                    {5, 6, 7, 8},
+                    {9, 10, 11, 12},
+                    {13, 14, 15, 0}
+            };
+            initImage();
+            x = 3;
+            y = 3;
         }
     }
 }
