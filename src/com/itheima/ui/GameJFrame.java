@@ -15,7 +15,17 @@ public class GameJFrame extends JFrame implements KeyListener {
     int x = 0;
     int y = 0;
 
+    //记录当前展示图片的路径
     String path = "image/animal/animal3/";
+
+    //定义一个二维数组，用来存储正确的数据
+    int[][] win = {
+            {1, 2, 3, 4},
+            {5, 6, 7, 8},
+            {9, 10, 11, 12},
+            {13, 14, 15, 0}
+    };
+
 
     //JFrame 界面，窗体
     //子类呢？也表示界面，窗体
@@ -80,6 +90,13 @@ public class GameJFrame extends JFrame implements KeyListener {
         this.getContentPane().removeAll();
         //细节：
         //先加载的图片在上方，后加载的图片在下面
+
+        if(victory()){
+            //显示胜利的图标
+            JLabel winJLabel = new JLabel(new ImageIcon("image/win.png"));
+            winJLabel.setBounds(203, 283, 197, 73);
+            this.getContentPane().add(winJLabel);
+        }
 
 
         //外循环 --- 把内循环重复执行了4次
@@ -184,6 +201,9 @@ public class GameJFrame extends JFrame implements KeyListener {
     //按键松开的时候调用这个方法
     @Override
     public void keyReleased(KeyEvent e) {
+        if(victory()){
+            return;
+        }
         //对上，下，左，右进行判断
         //左37 上38 右39 下40
         int code = e.getKeyCode();
@@ -238,8 +258,21 @@ public class GameJFrame extends JFrame implements KeyListener {
                     {13, 14, 15, 0}
             };
             initImage();
-            x = 3;
-            y = 3;
         }
+    }
+
+    //判断data数组中的数据是否跟win数组中相同
+    //如果全部相同，返回true，否则返回false
+    public boolean victory(){
+        for (int i = 0; i < data.length; i++) {
+            //i:表示二维数组data里面的索引
+            //data[i]:表示每一个一维数组
+            for (int j = 0; j < data[i].length; j++) {
+                if(data[i][j] != win[i][j]){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
